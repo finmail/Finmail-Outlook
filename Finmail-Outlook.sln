@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finmail-Outlook", "Finmail-Outlook\Finmail-Outlook.csproj", "{1476BF8A-D0A1-4233-9E1C-5E42AB0D42B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finmail-OutlookWeb", "Finmail-OutlookWeb\Finmail-OutlookWeb.csproj", "{6908FE9F-280D-4A46-9BCF-40D73FFEF758}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1476BF8A-D0A1-4233-9E1C-5E42AB0D42B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1476BF8A-D0A1-4233-9E1C-5E42AB0D42B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1476BF8A-D0A1-4233-9E1C-5E42AB0D42B7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1476BF8A-D0A1-4233-9E1C-5E42AB0D42B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1476BF8A-D0A1-4233-9E1C-5E42AB0D42B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1476BF8A-D0A1-4233-9E1C-5E42AB0D42B7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6908FE9F-280D-4A46-9BCF-40D73FFEF758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6908FE9F-280D-4A46-9BCF-40D73FFEF758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6908FE9F-280D-4A46-9BCF-40D73FFEF758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6908FE9F-280D-4A46-9BCF-40D73FFEF758}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B66D5F4-2449-4D22-990F-858BFF6B8256}
+	EndGlobalSection
+EndGlobal

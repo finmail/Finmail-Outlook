@@ -1,0 +1,567 @@
+﻿/*Page-specific styling */
+
+.padding {
+    padding: 15px;
+}
+
+/** START: Office UI Fabric Tabbed Panels using Pivot */
+.ms-Pivot--xlarge .ms-Pivot-link {
+    font-size: 20px;
+}
+
+.ms-Pivot--xxlarge .ms-Pivot-link {
+    font-size: 24px;
+}
+
+.ms-Pivot-panel-container {
+    position: relative;
+    padding: 0 0 0 0;
+    overflow: hidden;
+}
+
+.ms-Pivot-panel {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    opacity: 0;
+    background-color: #ffffff;
+}
+
+    .ms-Pivot-panel.is-selected {
+        position: relative;
+        opacity: 1;
+    }
+
+.ms-Pivot-panel-container.fade .ms-Pivot-panel {
+    transition: all 500ms ease;
+}
+
+    .ms-Pivot-panel-container.fade .ms-Pivot-panel.is-selected {
+        transition: all 500ms ease;
+        z-index: 100;
+    }
+/** END: Office UI Fabric Tabbed Panels using Pivot */
+
+.ms-Dropdown {
+    color: #333333;
+    font-family: 'Segoe UI Regular WestEuropean', 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    margin-bottom: 10px;
+    position: relative;
+    outline: 0;
+}
+
+    .ms-Dropdown:hover .ms-Dropdown-title,
+    .ms-Dropdown:hover .ms-Dropdown-caretDown,
+    .ms-Dropdown:focus .ms-Dropdown-title,
+    .ms-Dropdown:focus .ms-Dropdown-caretDown,
+    .ms-Dropdown:active .ms-Dropdown-title,
+    .ms-Dropdown:active .ms-Dropdown-caretDown {
+        color: #000000;
+    }
+
+    .ms-Dropdown:hover .ms-Dropdown-title,
+    .ms-Dropdown:active .ms-Dropdown-title {
+        border-color: #767676;
+    }
+
+    .ms-Dropdown:focus .ms-Dropdown-title {
+        border-color: #0078d7;
+    }
+
+    .ms-Dropdown .ms-Label {
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+
+    .ms-Dropdown.is-disabled .ms-Dropdown-title {
+        background-color: #f4f4f4;
+        border-color: #f4f4f4;
+        color: #a6a6a6;
+        cursor: default;
+    }
+
+@media screen and (-ms-high-contrast: active) {
+    .ms-Dropdown.is-disabled .ms-Dropdown-title {
+        border-color: #00ff00;
+        color: #00ff00;
+    }
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+    .ms-Dropdown.is-disabled .ms-Dropdown-title {
+        border-color: #600000;
+        color: #600000;
+    }
+}
+
+.ms-Dropdown.is-disabled .ms-Dropdown-caretDown {
+    color: #a6a6a6;
+}
+
+@media screen and (-ms-high-contrast: active) {
+    .ms-Dropdown.is-disabled .ms-Dropdown-caretDown {
+        color: #00ff00;
+    }
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+    .ms-Dropdown.is-disabled .ms-Dropdown-caretDown {
+        color: #600000;
+    }
+}
+
+.ms-Dropdown.ms-Dropdown--open .ms-Dropdown-items,
+.ms-Dropdown.is-open .ms-Dropdown-items {
+    display: block;
+    position: fixed;
+}
+
+.ms-Dropdown-select {
+    display: none;
+}
+
+.ms-Dropdown-caretDown {
+    color: #666666;
+    font-size: 17px;
+    position: absolute;
+    right: 9px;
+    bottom: 5px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.ms-Dropdown-title {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    background: #ffffff;
+    border: 1px solid #c8c8c8;
+    cursor: pointer;
+    display: block;
+    height: 32px;
+    line-height: 30px;
+    padding: 0 32px 0 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ms-Dropdown-items {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.4);
+    background-color: #ffffff;
+    display: none;
+    list-style-type: none;
+    position: absolute;
+    width: 100%;
+    max-width: 268px;
+    z-index: 400;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: scroll;
+}
+
+    .ms-Dropdown-items:before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 1px solid #eaeaea;
+    }
+
+@media screen and (-ms-high-contrast: active) {
+    .ms-Dropdown-items {
+        border: 1px solid #ffffff;
+    }
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+    .ms-Dropdown-items {
+        border: 1px solid #000000;
+    }
+}
+
+.ms-Dropdown-item {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: 40px;
+    line-height: 38px;
+    padding: 0 10px;
+    position: relative;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+@media screen and (-ms-high-contrast: active) {
+    .ms-Dropdown-item {
+        border-color: #000000;
+    }
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+    .ms-Dropdown-item {
+        border-color: #ffffff;
+    }
+}
+
+.ms-Dropdown-item:first-child,
+.ms-Dropdown-item:last-child {
+    height: 39px;
+}
+
+.ms-Dropdown-item:hover {
+    background-color: #eaeaea;
+    color: #000000;
+}
+
+@media screen and (-ms-high-contrast: active) {
+    .ms-Dropdown-item:hover {
+        background-color: #1aebff;
+        border-color: #1aebff;
+        color: #000000;
+    }
+
+        .ms-Dropdown-item:hover:focus {
+            border-color: #000000;
+        }
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+    .ms-Dropdown-item:hover {
+        background-color: #37006e;
+        border-color: #37006e;
+        color: #ffffff;
+    }
+}
+
+.ms-Dropdown-item:active {
+    background-color: #eaeaea;
+    border-color: #0078d7;
+    color: #000000;
+}
+
+.ms-Dropdown-item.is-disabled {
+    background: #ffffff;
+    color: #a6a6a6;
+    cursor: default;
+    line-height: 40px;
+}
+
+.ms-Dropdown-item.is-selected,
+.ms-Dropdown-item.ms-Dropdown-item--selected {
+    background-color: #c7e0f4;
+    color: #000000;
+    line-height: 40px;
+}
+
+    .ms-Dropdown-item.is-selected:hover,
+    .ms-Dropdown-item.ms-Dropdown-item--selected:hover {
+        background-color: #c7e0f4;
+    }
+
+@media screen and (-ms-high-contrast: active) {
+    .ms-Dropdown-item.is-selected,
+    .ms-Dropdown-item.ms-Dropdown-item--selected {
+        background-color: #1aebff;
+        border-color: #1aebff;
+        color: #000000;
+    }
+
+        .ms-Dropdown-item.is-selected:focus,
+        .ms-Dropdown-item.ms-Dropdown-item--selected:focus {
+            border-color: #000000;
+        }
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+    .ms-Dropdown-item.is-selected,
+    .ms-Dropdown-item.ms-Dropdown-item--selected {
+        background-color: #37006e;
+        border-color: #37006e;
+        color: #ffffff;
+    }
+}
+
+@media (min-width: 480px) {
+    .ms-Dropdown-items {
+        top: auto;
+        right: auto;
+        bottom: auto;
+        left: auto;
+        max-width: 100%;
+        max-height: 200px;
+    }
+
+    .ms-Dropdown.ms-Dropdown--open .ms-Dropdown-items,
+    .ms-Dropdown.is-open .ms-Dropdown-items {
+        position: absolute;
+    }
+}
+
+/** App specific style rules */
+.ms-ListItem {
+    background-color: #eaeaea;
+    border-radius: 5px;
+    border: 1px solid #eaeaea;
+    display: block;
+    margin-left: 8px;
+    margin-bottom: 10px;
+    padding: 9px 20px 3px 15px;
+    width: 100%;
+}
+
+.ms-ListItem-primaryText,
+.ms-ListItem-secondaryText,
+.ms-ListItem-tertiaryText {
+    white-space: normal;
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+    border-width: 0px;
+    border-top: 1px solid #c6c6c6;
+}
+
+h4 {
+    margin: 5px 0 10px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px black;
+}
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 280px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: -50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 40%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+.clearfix {
+    display: block;
+    clear: both;
+    height: 0;
+}
+
+.pointerCursor {
+    cursor: pointer;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.undisplayed {
+    display: none;
+}
+
+.ms-Icon.enlarge {
+    position: relative;
+    font-size: 20px;
+    top: 4px;
+}
+
+.ms-firstrun-value {
+    display: -webkit-inline-box;
+    display: inline;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    height: 100%;
+}
+
+.ms-firstrun-value__header {
+    padding: 20px 0;
+    min-height: 220px;
+    max-height: 300px;
+    display: -webkit-inline-box;
+    display: inline;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+
+    .ms-firstrun-value__header h1 {
+        letter-spacing: 5px;
+    }
+
+    .ms-firstrun-value__header p {
+        margin-top: 7px;
+    }
+
+.ms-firstrun-value__title, .ms-firstrun-value__subtitle {
+    padding: 0 12px;
+}
+
+.ms-firstrun-value__logo {
+    width: 100%;
+    height: 100%;
+    -webkit-flex: 1 1 0;
+    flex: 1 1 0;
+    background: transparent no-repeat center center;
+    background-size: contain;
+    background-image: url("../../../../../../assets/logo-background-geometric.png");
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+    .ms-firstrun-value__logo img {
+        height: 80px;
+    }
+
+.ms-firstrun-value__content {
+    display: -webkit-inline-box;
+    display: inline;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    height: 100%;
+    -webkit-flex: 1 1 0;
+    flex: 1 1 0;
+    padding: 20px;
+}
+
+.ms-firstrun-value__content--centered {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+
+.ms-firstrun-value__list {
+    list-style-type: none;
+}
+
+    .ms-firstrun-value__list li {
+        margin-bottom: 20px;
+    }
+
+        .ms-firstrun-value__list li i {
+            position: relative;
+            top: 2px;
+            margin-right: 10px;
+        }
+
+.ms-firstrun-value__action--primary.ms-Button {
+    -webkit-align-self: center;
+    align-self: center;
+    margin-top: 20px;
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    transition: background ease 0.1s, color ease 0.1s;
+}
+
+    .ms-firstrun-value__action--primary.ms-Button span.ms-Button-icon {
+        margin-right: 0;
+        color: #0078d7;
+        transition: background ease 0.1s, color ease 0.1s;
+    }
+
+        .ms-firstrun-value__action--primary.ms-Button span.ms-Button-icon:active, .ms-firstrun-value__action--primary.ms-Button span.ms-Button-icon:hover {
+            background: transparent;
+            color: #333333;
+            cursor: pointer;
+        }
+
+        .ms-firstrun-value__action--primary.ms-Button span.ms-Button-icon:active {
+            background: transparent;
+        }
+
+    .ms-firstrun-value__action--primary.ms-Button span.ms-Button-icon--disabled {
+        opacity: 0.6;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+        .ms-firstrun-value__action--primary.ms-Button span.ms-Button-icon--disabled:active, .ms-firstrun-value__action--primary.ms-Button span.ms-Button-icon--disabled:hover {
+            background: transparent;
+        }
+
+    .ms-firstrun-value__action--primary.ms-Button span.ms-Button-label {
+        margin-right: 10px;
+        color: #0078d7;
+    }
+
+    .ms-firstrun-value__action--primary.ms-Button:active, .ms-firstrun-value__action--primary.ms-Button:hover {
+        background: #eff6fc;
+        color: #0078d7;
+        cursor: pointer;
+    }
+
+    .ms-firstrun-value__action--primary.ms-Button:active {
+        background: #eff6fc;
+    }
+
+.ms-firstrun-value__action--primary.ms-Button--disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+    .ms-firstrun-value__action--primary.ms-Button--disabled:active, .ms-firstrun-value__action--primary.ms-Button--disabled:hover {
+        background: transparent;
+    }

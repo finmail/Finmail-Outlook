@@ -1,0 +1,537 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title></title>
+    <script src="Scripts/jquery-3.3.1.js" type="text/javascript"></script>
+    <script src="Scripts/jsrsasign/jsrsasign-all-min.js" type="text/javascript"></script>
+
+    <!-- For the JavaScript APIs for Office, go to https://aka.ms/officejs-overview to learn more. -->
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+
+    <!-- To enable offline debugging using a local reference to Office.js, use: -->
+    <!-- <script src="Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
+    <!-- <script src="Scripts/Office/1/office.js" type="text/javascript"></script>  -->
+    <script src="Scripts/jquery.fabric.min.js" type="text/javascript"></script>
+    <script src="MessageCompose.js" type="text/javascript"></script>
+
+    <!-- For the Office UI Fabric, go to https://aka.ms/office-ui-fabric to learn more. -->
+    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/2.6.3/css/fabric.min.css" />
+    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/2.6.3/css/fabric.components.min.css" />
+
+    <link rel="stylesheet" href="MessageCompose.css" />
+    <!-- To enable the offline use of Office UI Fabric, use: -->
+    <!-- link rel="stylesheet" href="Content/fabric.min.css" -->
+    <!-- link rel="stylesheet" href="Content/fabric.components.min.css" -->
+</head>
+<body>
+    <div id="main_panel" style="display: none;">
+        <ul class="ms-Pivot ms-Pivot--xlarge">
+            <li class="ms-Pivot-link is-selected" data-panel="help_panel">Home</li>
+            <li class="ms-Pivot-link" data-panel="pay_panel" id="pay_panel_pivot">Payout</li>
+            <li class="ms-Pivot-link" data-panel="history_panel">History</li>
+            <li class="ms-Pivot-link" data-panel="profile_panel" id="profile_panel_pivot">Profile</li>
+        </ul>
+        <hr />
+        <div class="ms-Pivot-panel-container fade">
+            <div class="ms-Pivot-panel is-selected" id="help_panel">
+                <div class="ms-firstrun-value" style="height: 100%; overflow-y: auto;">
+                    <section class="ms-firstrun-value__header">
+                        <div class="ms-firstrun-value__logo">
+                            <img src="Images/Icon80.png" />
+                        </div>
+                        <div class="ms-firstrun-value__title" style="text-align: center;">
+                            <h1 class="ms-font-xl ms-fontWeight-light">WELCOME</h1>
+                        </div>
+                        <div class="ms-firstrun-value__subtitle ms-font-m ms-fontWeight-light">
+                            <p>The Finmail Add-in for Outlook and Hotmail helps you manage digital asset online, i.e. USDT and Bitcoin, and sync with email!</p>
+                            <p>
+                                The Finmail account is tied to your primary email account. Note that shared/group mailboxes are not
+                                supported for now.
+                            </p>
+                            <p>
+                                To sign out, just click the "Sign out" button in the <a class="ms-Link start_profile" href="#">Profile</a> panel.
+                                Your Finmail account will also be signed out automatically after closing the add-in for a short while.
+                            </p>
+                            <p>Visit us at <a class="ms-Link" href="https://www.finmail.com" target="_blank">https://www.finmail.com</a></p>
+                        </div>
+                    </section>
+                    <section class="ms-firstrun-value__content">
+                        <div class="ms-font-m ms-fontColor-themePrimary ms-firstrun-value__content--centered">
+                            <ul class="ms-firstrun-value__list ms-fontWeight-regular">
+                                <li><span><i class="ms-Icon enlarge ms-Icon--chart"></i>Review digital asset balance</span></li>
+                                <li><span><i class="ms-Icon enlarge ms-Icon--onlineJoin"></i>Deposit and payout digital asset</span></li>
+                                <li><span><i class="ms-Icon enlarge ms-Icon--story"></i>Review transaction history</span></li>
+                                <li><span><i class="ms-Icon enlarge ms-Icon--mailCheck"></i>Sync with Email</span></li>
+                            </ul>
+                            <button class="ms-firstrun-value__action--primary ms-bgColor-themePrimary ms-Button ms-Button--command ms-fontColor-white ms-font-m"
+                                    id="get_started">
+                                <span class="ms-Button-label">Get Started!</span>
+                                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--chevronThickRight"></i></span>
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="ms-Pivot-panel" id="pay_panel">
+                <div class="ms-MessageBar ms-MessageBar--warning" id="pay_panel_messagebar">
+                    <div class="ms-MessageBar-content">
+                        <div class="ms-MessageBar-icon">
+                            <i class="ms-Icon ms-Icon--refresh" id="pay_panel_messagebar_icon"></i>
+                        </div>
+                        <div class="ms-MessageBar-text" id="info">
+                            Connecting...
+                        </div>
+                    </div>
+                </div>
+                <div id="content-header">
+                    <h4 class="ms-font-l ms-fontColor-themeDarkAlt">Review balance and pay to the others</h4>
+                </div>
+                <div class="ms-Grid">
+                    <div class="ms-Grid-row">
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <label class="ms-Label is-required" id="amount_label">Amount (USDT)</label>
+                            <p></p>
+                        </div>
+                        <div class="ms-Grid-col ms-u-sm6 ms-u-md6">
+                            <input class="ms-TextField-field" id="amount" type="text" value="" />
+                            <p></p>
+                        </div>
+                        <div class="ms-Grid-col ms-u-sm3 ms-u-md6">
+                            <div class="ms-Dropdown" tabindex="0" id="currency_dropdown">
+                                <i class="ms-Dropdown-caretDown ms-Icon ms-Icon--ChevronDown"></i>
+                                <select class="ms-Dropdown-select" id="currency">
+                                    <option id="currency_btc">BTC</option>
+                                    <option id="currency_usdt" selected="selected">USDT</option>
+                                </select>
+                            </div>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="ms-Grid-row">
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <label class="ms-Label is-required" id="address_label">Receiver Address (USDT or Email)</label>
+                            <p></p>
+                        </div>
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <input class="ms-TextField-field" id="address" type="text" value="" autofocus />
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="ms-Grid-row">
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <div class="ms-Dropdown" tabindex="1" id="fee_dropdown">
+                                <label class="ms-Label is-required" id="fee_label">Speed &amp; Fee (USDT, no fee for internal transfer if applicable)</label>
+                                <i class="ms-Dropdown-caretDown ms-Icon ms-Icon--ChevronDown"></i>
+                                <select class="ms-Dropdown-select" id="fee">
+                                    <option id="fee_1h">&lt; 1 Hour</option>
+                                    <option id="fee_2h" selected="selected">&lt; 2 Hours</option>
+                                    <option id="fee_6h">&lt; 6 Hours</option>
+                                    <option id="fee_12h">&lt; 12 Hours</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ms-Grid-row">
+                        <p></p>
+                    </div>
+                    <div class="ms-Grid-row">
+                        <button class="ms-Button ms-Button--primary ms-PanelAction-open" id="pay">
+                            <span class="ms-Button-label">Pay</span>
+                        </button>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            <div class="ms-Pivot-panel" id="history_panel">
+                <div>
+                    <h4 class="ms-font-l ms-fontColor-themeDarkAlt ms-fontWeight-semilight" id="deposit_history_headline">Deposit History</h4>
+                </div>
+                <div id="deposit_history"></div>
+                <p></p>
+                <div>
+                    <h4 class="ms-font-l ms-fontColor-themeDarkAlt ms-fontWeight-semilight" id="payout_history_headline">Payout History</h4>
+                </div>
+                <p></p>
+                <div id="payout_history"></div>
+                <p></p>
+            </div>
+            <div class="ms-Pivot-panel" id="profile_panel">
+                <div>
+                    <h4 class="ms-font-l ms-fontColor-themeDarkAlt ms-fontWeight-semilight" id="title_password">Change your Finmail Account</h4>
+                </div>
+                <div class="ms-Grid">
+                    <div class="ms-Grid-row" id="div_current_password">
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <label class="ms-Label is-required">
+                                Current Finmail Password
+                                <a class="ms-Link" href="#" title="Reset current Finmail password" id="reset_pwd">(reset)</a>
+                            </label>
+                            <p></p>
+                        </div>
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <input class="ms-TextField-field" id="current_pwd" type="password" name="current_password" value="" />
+                            <p></p>
+                        </div>
+                    </div>
+
+                    <div class="ms-Grid-row">
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <label class="ms-Label" id="label_new_pwd">New Finmail Password (1-16 characters)</label>
+                            <p></p>
+                        </div>
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <input class="ms-TextField-field" id="new_pwd" type="password" name="new_password" value="" />
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="ms-Grid-row">
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <label class="ms-Label" id="label_confirm_new_pwd">Confirm New Finmail Password</label>
+                            <p></p>
+                        </div>
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <input class="ms-TextField-field" id="confirm_new_pwd" type="password" name="confirm_new_password" value="" />
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="ms-Grid-row">
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <label class="ms-Label" id="label_backup_email">Backup Mailbox (For password reset, should not be visible in the current email client)</label>
+                            <p></p>
+                        </div>
+                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                            <input class="ms-TextField-field" id="backup_email" type="text" name="new_backup_email" value="" />
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="ms-Grid-row">
+                        <p></p>
+                    </div>
+                    <div class="ms-Grid-row">
+                        <div class="ms-Grid-col ms-u-sm6 ms-u-md6">
+                            <button class="ms-Button ms-Button--primary" id="change_pwd">
+                                <div class="ms-Button-label" id="change_pwd_label">Change</div>
+                            </button>
+                        </div>
+                        <div class="ms-Grid-colms-u-sm6 ms-u-md6">
+                            <button class="ms-Button ms-Button--primary" id="sign_out" style="float: right;">
+                                <div class="ms-Button-label" id="sign_out_label">Sign out</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ms-Panel is-open" id="panel_sign_up">
+        <div class="ms-Panel-main" id="panel_main_sign_up" style="display: none;">
+            <div class="ms-Panel-contentInner">
+                <div class="ms-Panel-content">
+                    <div class="ms-firstrun-value" style="height: 100%; overflow-y: auto;">
+                        <section class="ms-firstrun-value__header">
+                            <div class="ms-firstrun-value__logo">
+                                <img src="Images/Icon80.png" />
+                            </div>
+                            <div class="ms-firstrun-value__title" style="text-align: center;">
+                                <h1 class="ms-Panel-headerText ms-font-xl ms-fontWeight-light">Create your Finmail account</h1>
+                            </div>
+
+                            <div class="ms-firstrun-value__subtitle ms-font-m ms-fontWeight-light">
+                                <div class="ms-Grid">
+                                    <div class="ms-Grid-row">
+                                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                            <label class="ms-Label is-required">
+                                                New Finmail Password (1-16 characters)
+                                            </label>
+                                        </div>
+                                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                            <input class="ms-TextField-field" id="sign_up_pwd" type="password" name="password" value="" autofocus />
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    <div class="ms-Grid-row">
+                                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                            <label class="ms-Label is-required">
+                                                Confirm New Finmail Password
+                                            </label>
+                                        </div>
+                                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                            <input class="ms-TextField-field" id="confirm_sign_up_pwd" type="password" name="password" value="" />
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    <div class="ms-Grid-row">
+                                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                            <label class="ms-Label is-required">
+                                                Backup Mailbox (For password reset, should not be visible in the current email client)
+                                            </label>
+                                        </div>
+                                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                            <input class="ms-TextField-field" id="sign_up_backup_email" type="text" name="new_backup_email" value="" />
+                                        </div>
+                                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                            <label class="ms-Label" style="color: red;" id="sign_up_msg">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <p></p>
+                                    <button class="ms-Button ms-Button--primary" id="sign_up">
+                                        <span class="ms-Button-label">Create</span>
+                                    </button>
+                                    <p></p>
+                                    <label class="ms-Label">
+                                        * The Finmail Add-in for Outlook and Hotmail helps you manage digital asset online, i.e. USDT and Bitcoin,
+                                        and sync with email!
+                                    </label>
+                                    <label class="ms-Label">
+                                        New to Finmail? Just sign up for a new Finmail account, which does not need a username. <strong>
+                                            After
+                                            signing up, please check backup mailbox for email verification.
+                                        </strong>
+                                    </label>
+                                    <label class="ms-Label">
+                                        The Finmail account is tied to your primary email account. Note that shared/group mailboxes are not
+                                        supported for now.
+                                    </label>
+                                    <label class="ms-Label">
+                                        For more details please visit us at <a class="ms-Link" href="https://www.finmail.com" target="_blank">https://www.finmail.com</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <p>
+                            </p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ms-Panel is-open" id="panel_sign_in">
+        <div class="ms-Panel-main" id="panel_main_sign_in" style="display: none;">
+            <div class="ms-Panel-contentInner">
+                <div class="ms-Panel-content">
+                    <div class="ms-firstrun-value" style="height: 100%; overflow-y: auto;">
+                        <section class="ms-firstrun-value__header">
+                            <div class="ms-firstrun-value__logo">
+                                <img src="Images/Icon80.png" />
+                            </div>
+                            <div class="ms-firstrun-value__title" style="text-align: center;">
+                                <h1 class="ms-Panel-headerText ms-font-xl ms-fontWeight-light">Sign in to Finmail</h1>
+                            </div>
+
+                            <div class="ms-firstrun-value__subtitle ms-font-m ms-fontWeight-light">
+                                <div class="ms-Grid">
+                                    <div class="ms-Grid-row">
+                                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                            <label class="ms-Label is-required">
+                                                Finmail Password
+                                                <a class="ms-Link" href="#" title="Reset Finmail password if forgotten" id="forgot_pwd">(forgot)</a>
+                                            </label>
+                                        </div>
+                                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                            <input class="ms-TextField-field" id="sign_in_pwd" type="password" name="password" value="" autofocus />
+                                        </div>
+                                        <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                            <label class="ms-Label" style="color: red;" id="sign_in_msg">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p></p>
+                                <button class="ms-Button ms-Button--primary" id="sign_in">
+                                    <span class="ms-Button-label">Sign in</span>
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ms-Panel" id="panel_pay">
+        <div class="ms-Overlay ms-Overlay--dark ms-PanelAction-open"></div>
+        <div class="ms-Panel-main" id="panel_main_pay">
+            <div class="ms-Panel-contentInner">
+                <p class="ms-Panel-headerText">Confirm Payout</p>
+                <div class="ms-Panel-content">
+                    <div class="ms-Grid">
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label" id="panel_amount_label">Amount (USDT):</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_amount"></label>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label" id="panel_address_label">Receiver Address (USDT or Email):</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_address"></label>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label" id="panel_fee_label">Speed &amp; Fee (USDT, no fee for internal transfer if applicable):</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_fee"></label>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                        </div>
+                        <div class="ms-Grid-row" id="pay_with_pwd">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label is-required">
+                                    Finmail Password
+                                    <a class="ms-Link" href="#" title="Reset current payment password" id="payment_reset_pwd">(reset)</a>
+                                </label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <input class="ms-TextField-field" id="pwd" type="password" name="password" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <p></p>
+                    <button class="ms-Button ms-Button--primary" id="confirm">
+                        <span class="ms-Button-label">Confirm</span>
+                    </button>
+                    <button class="ms-PanelAction-close" id="cancel">
+                        <span class="ms-Button-label">Cancel</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ms-Panel" id="panel_transaction">
+        <div class="ms-Overlay ms-Overlay--dark ms-PanelAction-open"></div>
+        <div class="ms-Panel-main" id="panel_main_transaction">
+            <div class="ms-Panel-contentInner">
+                <p class="ms-font-l ms-fontColor-themeDarkAlt ms-fontWeight-semilight">Transaction Details</p>
+                <div class="ms-Panel-content">
+                    <div class="ms-Grid">
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label">Time:</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_transaction_time"></label>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label">Currency:</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_transaction_currency"></label>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label">Type:</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_transaction_type"></label>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label" id="panel_transaction_sender_address_label">Sender Address (Email):</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_transaction_sender_address"></label>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label" id="panel_transaction_receiver_address_label">Receiver Address (USDT or Email):</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_transaction_receiver_address"></label>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label" id="panel_transaction_amount_label">Amount (USDT):</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_transaction_amount"></label>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label" id="panel_transaction_fee_label">Fee (USDT):</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_transaction_fee"></label>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label" id="panel_transaction_id_label">Transaction ID (USDT or Internal):</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_transaction_id"></label>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label" id="panel_transaction_id_label">Status:</label>
+                            </div>
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md6">
+                                <label class="ms-Label ms-fontColor-orange" id="panel_transaction_status"></label>
+                            </div>
+                        </div>
+                        <div class="ms-Grid-row">
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                        </div>
+                    </div>
+                    <p></p>
+                    <button class="ms-Button ms-Button--primary" id="panel_transaction_update_email">
+                        <span class="ms-Button-label">Update email</span>
+                    </button>
+                    <button class="ms-PanelAction-close" id="panel_transaction_back">
+                        <span class="ms-Button-label">Back</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FabricUI component used for displaying notifications -->
+    <div class="ms-MessageBanner is-hidden" style="position: absolute; bottom: 0; border-bottom: 0 none">
+        <div class="ms-MessageBanner-content">
+            <div class="ms-MessageBanner-text">
+                <div class="ms-MessageBanner-clipper" style="overflow: visible; white-space: normal; text-align: center; margin-left: 25px;">
+                    <div class="ms-font-m ms-fontWeight-semibold" id="notificationHeader"></div>
+                </div>
+            </div>
+            <button class="ms-MessageBanner-expand" style="display: none;"><i class="ms-Icon ms-Icon--chevronsDown"></i></button>
+            <div class="ms-MessageBanner-action"></div>
+        </div>
+        <button class="ms-MessageBanner-close"><i class="ms-Icon ms-Icon--x"></i></button>
+    </div>
+</body>
+</html>
