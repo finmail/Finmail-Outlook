@@ -461,6 +461,7 @@
         var endpoint = appdomain + '/auth';
         var token = asyncResult.value;
         var data = asyncResult.asyncContext;
+        var profile = Office.context.mailbox.userProfile;
         var newPwd = data["new-pwd"];
         var hashedCurrentPwd = data["hashed-current-pwd"];
         var hashedNewPwd = data["hashed-new-pwd"];
@@ -471,8 +472,10 @@
             url: endpoint,
             crossDomain: true,
             data: JSON.stringify({
+                'email': profile.emailAddress,
                 'method': "change",
-                'msexch-token': token,
+                'token': token,
+                'type': "msexch",
                 'hashed-current-pwd': hashedCurrentPwd,
                 'hashed-new-pwd': hashedNewPwd,
                 'backup-email': backupEmail
@@ -503,6 +506,7 @@
     function performResetPasswordCb(asyncResult) {
         var endpoint = appdomain + '/auth';
         var token = asyncResult.value;
+        var profile = Office.context.mailbox.userProfile;
         var sign_in_flag = asyncResult.asyncContext["sign-in-flag"];
         var msg;
 
@@ -510,8 +514,10 @@
             url: endpoint,
             crossDomain: true,
             data: JSON.stringify({
+                'email': profile.emailAddress,
                 'method': "reset",
-                'msexch-token': token
+                'token': token,
+                'type': "msexch"
             }),
             // headers: {'X-Requested-With': 'XMLHttpRequest'},
             contentType: 'application/json; charset=utf-8',
@@ -613,14 +619,17 @@
         var amount = data.amount;
         var fee = data.fee;
         var hashedPwd = data["hashed-pwd"];
+        var profile = Office.context.mailbox.userProfile;
         var currency = getCurrency();
 
         $.ajax({
             url: endpoint,
             crossDomain: true,
             data: JSON.stringify({
+                'email': profile.emailAddress,
                 'method': "prepare",
-                'msexch-token': token,
+                'token': token,
+                'type': "msexch",
                 'hashed-pwd': hashedPwd,
                 'currency-name': currency_name,
                 'address': address,
@@ -643,8 +652,10 @@
                         url: endpoint,
                         crossDomain: true,
                         data: JSON.stringify({
+                            'email': profile.emailAddress,
                             'method': "send",
-                            'msexch-token': token,
+                            'token': token,
+                            'type': "msexch",
                             'currency-name': currency_name,
                             'txid': txid
                         }),
@@ -758,8 +769,6 @@
 
             $('#amount').trigger("keyup");
             $('#fee').trigger("change");
-            $('label').replaceAll
-
 
             $("#deposit_address").on('click', function () {
                 var copy = function (e) {
@@ -847,10 +856,11 @@
             url: endpoint,
             crossDomain: true,
             data: JSON.stringify({
-                'msexch-token': token,
+                'email': profile.emailAddress,
+                'token': token,
+                'type': "msexch",
                 'method': method,
-                'name': profile.displayName,
-                'email': profile.emailAddress
+                'name': profile.displayName
             }),
             // headers: {'X-Requested-With': 'XMLHttpRequest'},
             contentType: 'application/json; charset=utf-8',
@@ -858,7 +868,12 @@
             dataType: 'json',
             success: function (data) {
                 if (data.result == "OK") {
-                    if (show_sign_in) {
+                    if (data.user_status == "Waiting for activation" ||
+                        data.user_status == "Locked") { // To be updated in future
+                        showPanel(false, true, false);
+                    } else if (data.user_status == "Signed out") {
+                        showPanel(false, false, true);
+                    } else if (show_sign_in) {
                         showPanel(false, false, true);
                     } else {
                         currencies = data.currencies;
@@ -968,11 +983,6 @@
                             $("#panel_transaction").addClass("is-open");
                         });
                     }
-                } else if (data.result == "Failed to get user information. User does not exist." ||
-                    data.result == "Failed to get user information. Please activate first.") {
-                    showPanel(false, true, false);
-                } else if (data.result == "Failed to get user information. Please sign in first.") {
-                    showPanel(false, false, true);
                 } else {
                     // error
                     currencies = [];
@@ -987,9 +997,7 @@
                     $('#deposit_history').html("");
                     $('#payout_history').html("");
 
-                    if (data.result != "Failed to get or create user information. Please sign in first.") {
-                        showNotification(lang(data.result));
-                    }
+                    showNotification(lang(data.result));
                 }
             },
             error: function (xhr, status, error) {
@@ -1058,12 +1066,13 @@
             url: endpoint,
             crossDomain: true,
             data: JSON.stringify({
+                'email': profile.emailAddress,
                 'method': "sign-up",
-                'msexch-token': token,
+                'token': token,
+                'type': "msexch",
                 'hashed-new-pwd': hashedNewPwd,
                 'backup-email': backupEmail,
-                'name': profile.displayName,
-                'email': profile.emailAddress
+                'name': profile.displayName
             }),
             // headers: {'X-Requested-With': 'XMLHttpRequest'},
             contentType: 'application/json; charset=utf-8',
@@ -1125,14 +1134,17 @@
         var endpoint = appdomain + '/auth';
         var token = asyncResult.value;
         var data = asyncResult.asyncContext;
+        var profile = Office.context.mailbox.userProfile;
         var hashedSignInPwd = data["hashed-sign-in-pwd"];
 
         $.ajax({
             url: endpoint,
             crossDomain: true,
             data: JSON.stringify({
+                'email': profile.emailAddress,
                 'method': "sign-in",
-                'msexch-token': token,
+                'token': token,
+                'type': "msexch",
                 'hashed-sign-in-pwd': hashedSignInPwd
             }),
             // headers: {'X-Requested-With': 'XMLHttpRequest'},
@@ -1174,13 +1186,16 @@
     function performUserSignOutCb(asyncResult) {
         var endpoint = appdomain + '/auth';
         var token = asyncResult.value;
+        var profile = Office.context.mailbox.userProfile;
 
         $.ajax({
             url: endpoint,
             crossDomain: true,
             data: JSON.stringify({
+                'email': profile.emailAddress,
                 'method': "sign-out",
-                'msexch-token': token
+                'token': token,
+                'type': "msexch"
             }),
             // headers: {'X-Requested-With': 'XMLHttpRequest'},
             contentType: 'application/json; charset=utf-8',
