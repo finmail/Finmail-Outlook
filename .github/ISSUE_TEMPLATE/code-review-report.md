@@ -19,5 +19,9 @@ The place of the questioned code, i.e. commit 123, file: abc.js, line 37
 A clear and concise description of what improvements can be made
 
 
+**Email for payment**
+An email address with Finmail Add-in installed to receive payment
+
+
 **Additional context**
 Add any other context about the problem here.
